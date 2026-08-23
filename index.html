@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🎰 わくわくガチャゲーム</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: linear-gradient(135deg, #ffe5f0, #e2f0ff);
+  color: #333;
+  text-align: center;
+}
+
+header {
+  background: linear-gradient(90deg, #ff69a4, #6da9ff);
+  color: white;
+  padding: 25px 15px;
+}
+
+h1 {
+  margin: 0 0 12px;
+}
+
+.money {
+  display: inline-block;
+  background: white;
+  color: #333;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 23px;
+  font-weight: bold;
+}
+
+main {
+  max-width: 900px;
+  margin: 25px auto;
+  padding: 0 15px;
+}
+
+.section {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #ff5795;
+}
+
+.jobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.job {
+  background: white;
+  border: 3px solid #eee;
+  border-radius: 20px;
+  padding: 22px;
+}
+
+.job h3 {
+  font-size: 23px;
+}
+
+.job-icon {
+  font-size: 55px;
+}
+
+button {
+  border: none;
+  border-radius: 30px;
+  padding: 13px 25px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background: #aaa !important;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.work-btn {
+  background: #5d91ff;
+  color: white;
+}
+
+.gacha-btn {
+  background: linear-gradient(90deg, #ffad33, #ffd633);
+  color: white;
+  font-size: 21px;
+  padding: 18px 35px;
+}
+
+.name-btn {
+  background: #50c878;
+  color: white;
+}
+
+.reset-btn {
+  background: #ff6666;
+  color: white;
+}
+
+.job-status {
+  margin-top: 15px;
+  font-weight: bold;
+  min-height: 25px;
+}
+
+.progress-box {
+  margin-top: 15px;
+  display: none;
+}
+
+.progress {
+  width: 100%;
+  height: 20px;
+  background: #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #58d68d, #3498db);
+  transition: width 0.2s;
+}
+
+.capsule {
+  width: 170px;
+  height: 170px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7eb3 50%, #ffcc70 50%);
+  border: 8px solid white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 60px;
+}
+
+.shake {
+  animation: shake 0.6s infinite;
+}
+
+@keyframes shake {
+
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(10deg);
+  }
+
+  50% {
+    transform: rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+
+}
+
+.result-card {
+  display: inline-block;
+  min-width: 260px;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.rarity {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.R {
+  color: #4285f4;
+}
+
+.SR {
+  color: #994cff;
+}
+
+.SSR {
+  color: #ffae00;
+  text-shadow: 0 0 8px gold;
+}
+
+.item {
+  font-size: 25px;
+  margin: 10px;
+}
+
+.collection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.collection-item {
+  background: white;
+  border: 2px solid #eee;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.count {
+  color: #777;
+  font-size: 14px;
+}
+
+input {
+  padding: 13px;
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  font-size: 17px;
+  width: 220px;
+}
+
+.rank {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  padding: 15px;
+  margin: 8px 0;
+  border-radius: 15px;
+  border: 2px solid #eee;
+  font-size: 18px;
+}
+
+.small {
+  color: #777;
+  font-size: 14px;
+}
+
+footer {
+  padding: 20px;
+  color: #777;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+  <h1>🎰 わくわくガチャゲーム 🎰</h1>
+
+  <div class="money">
+    💰 <span id="money">0</span>円
+  </div>
+
+  <p>
+    プレイヤー：
+    <span id="playerName">未設定</span>
+  </p>
+
+</header>
+
+
+<main>
+
+
+<!-- =========================
+     プレイヤー名
+========================= -->
+
+<section class="section">
+
+  <h2>👤 プレイヤー名</h2>
+
+  <input
+    id="nameInput"
+    maxlength="15"
+    placeholder="名前を入力"
+  >
+
+  <button
+    class="name-btn"
+    onclick="saveName()"
+  >
+    名前を保存
+  </button>
+
+</section>
+
+
+<!-- =========================
+     お仕事
+========================= -->
+
+<section class="section">
+
+  <h2>💼 おしごと</h2>
+
+  <p>
+    仕事をしてお金を稼ごう！
+  </p>
+
+
+  <div class="jobs">
+
+
+    <!-- コンビニ -->
+
+    <div class="job">
+
+      <div class="job-icon">🏪</div>
+
+      <h3>コンビニ店員</h3>
+
+      <p>⏱️ 5秒働く</p>
+
+      <p>
+        💰 給料：
+        <strong>100円</strong>
+      </p>
+
+      <button
+        id="convenienceBtn"
+        class="work-btn"
+        onclick="startWork(
+          'コンビニ店員',
+          100,
+          5,
+          'convenience'
+        )"
+      >
+        🏪 はたらく
+      </button>
+
+      <div
+        id="convenienceStatus"
+        class="job-status"
+      ></div>
+
+      <div
+        id="convenienceProgressBox"
+        class="progress-box"
+      >
+
+        <div class="progress">
+
+          <div
+            id="convenienceProgress"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <p>
+          残り
+          <span id="convenienceTime">5</span>秒
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ファミリーレストラン -->
+
+    <div class="job">
+
+      <div class="job-icon">🍽️</div>
+
+      <h3>ファミリーレストラン店員</h3>
+
+      <p>⏱️ 8秒働く</p>
+
+      <p>
+        💰 給料：
+        <strong>300円</strong>
+      </p>
+
+      <button
+        id="restaurantBtn"
+        class="work-btn"
+        onclick="startWork(
+          'ファミリーレストラン店員',
+          300,
+          8,
+          'restaurant'
+        )"
+      >
+        🍽️ はたらく
+      </button>
+
+      <div
+        id="restaurantStatus"
+        class="job-status"
+      ></div>
+
+      <div
+        id="restaurantProgressBox"
+        class="progress-box"
+      >
+
+        <div class="progress">
+
+          <div
+            id="restaurantProgress"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <p>
+          残り
+          <span id="restaurantTime">8</span>秒
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ゲーム開発 -->
+
+    <div class="job">
+
+      <div class="job-icon">🎮</div>
+
+      <h3>ゲーム開発</h3>
+
+      <p>⏱️ 10秒働く</p>
+
+      <p>
+        💰 給料：
+        <strong>500円</strong>
+      </p>
+
+      <button
+        id="gameBtn"
+        class="work-btn"
+        onclick="startWork(
+          'ゲーム開発',
+          500,
+          10,
+          'game'
+        )"
+      >
+        🎮 はたらく
+      </button>
+
+      <div
+        id="gameStatus"
+        class="job-status"
+      ></div>
+
+      <div
+        id="gameProgressBox"
+        class="progress-box"
+      >
+
+        <div class="progress">
+
+          <div
+            id="gameProgress"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <p>
+          残り
+          <span id="gameTime">10</span>秒
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- 大工 -->
+
+    <div class="job">
+
+      <div class="job-icon">🔨</div>
+
+      <h3>大工さん</h3>
+
+      <p>⏱️ 15秒働く</p>
+
+      <p>
+        💰 給料：
+        <strong>800円</strong>
+      </p>
+
+      <button
+        id="carpenterBtn"
+        class="work-btn"
+        onclick="startWork(
+          '大工さん',
+          800,
+          15,
+          'carpenter'
+        )"
+      >
+        🔨 はたらく
+      </button>
+
+      <div
+        id="carpenterStatus"
+        class="job-status"
+      ></div>
+
+      <div
+        id="carpenterProgressBox"
+        class="progress-box"
+      >
+
+        <div class="progress">
+
+          <div
+            id="carpenterProgress"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <p>
+          残り
+          <span id="carpenterTime">15</span>秒
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- アプリ開発 -->
+
+    <div class="job">
+
+      <div class="job-icon">📱</div>
+
+      <h3>アプリ開発</h3>
+
+      <p>⏱️ 20秒働く</p>
+
+      <p>
+        💰 給料：
+        <strong>1,000円</strong>
+      </p>
+
+      <button
+        id="appBtn"
+        class="work-btn"
+        onclick="startWork(
+          'アプリ開発',
+          1000,
+          20,
+          'app'
+        )"
+      >
+        📱 はたらく
+      </button>
+
+      <div
+        id="appStatus"
+        class="job-status"
+      ></div>
+
+      <div
+        id="appProgressBox"
+        class="progress-box"
+      >
+
+        <div class="progress">
+
+          <div
+            id="appProgress"
+            class="progress-bar"
+          ></div>
+
+        </div>
+
+        <p>
+          残り
+          <span id="appTime">20</span>秒
+        </p>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ガチャ
+========================= -->
+
+<section class="section">
+
+  <h2>🎁 ガチャガチャ</h2>
+
+  <p>
+    1回
+    <strong>100円</strong>！
+  </p>
+
+
+  <div
+    id="capsule"
+    class="capsule"
+  >
+    🎁
+  </div>
+
+
+  <button
+    class="gacha-btn"
+    onclick="gacha()"
+  >
+    🎰 ガチャを回す！
+  </button>
+
+
+  <p class="small">
+
+    🔵 R：70%　
+
+    🟣 SR：25%　
+
+    🟡 SSR：5%
+
+  </p>
+
+
+  <div id="result"></div>
+
+</section>
+
+
+<!-- =========================
+     コレクション
+========================= -->
+
+<section class="section">
+
+  <h2>📚 コレクション</h2>
+
+  <p class="small">
+    🎮 ゲーム機や 🍫 おかしを集めよう！
+  </p>
+
+  <div
+    id="collection"
+    class="collection"
+  ></div>
+
+</section>
+
+
+<!-- =========================
+     ランキング
+========================= -->
+
+<section class="section">
+
+  <h2>🏆 ランキング</h2>
+
+  <p class="small">
+    集めた景品の数でランキング！
+  </p>
+
+  <div id="ranking"></div>
+
+
+  <button
+    class="reset-btn"
+    onclick="clearRanking()"
+  >
+    🗑️ ランキングを消す
+  </button>
+
+</section>
+
+
+<!-- =========================
+     リセット
+========================= -->
+
+<section class="section">
+
+  <button
+    class="reset-btn"
+    onclick="resetGame()"
+  >
+    🔄 ゲームをリセット
+  </button>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+  🎮🍫 楽しく遊んで景品を集めよう！ 🍭🎮
+
+</footer>
+
+
+<script>
+
+
+// ======================================
+// 保存データ
+// ======================================
+
+let money =
+  Number(
+    localStorage.getItem(
+      "gachaMoney"
+    )
+  ) || 0;
+
+
+let playerName =
+  localStorage.getItem(
+    "gachaPlayerName"
+  ) || "未設定";
+
+
+let collection =
+  JSON.parse(
+    localStorage.getItem(
+      "gachaCollection"
+    )
+  ) || {};
+
+
+let ranking =
+  JSON.parse(
+    localStorage.getItem(
+      "gachaRanking"
+    )
+  ) || [];
+
+
+if (!Array.isArray(ranking)) {
+
+  ranking = [];
+
+}
+
+
+let working = false;
+
+
+// ======================================
+// 景品
+// ======================================
+
+const items = {
+
+
+  R: [
+
+    "🍫 チョコレート",
+
+    "🍭 キャンディ",
+
+    "🍪 クッキー",
+
+    "🍬 グミ",
+
+    "🥨 おかしスナック",
+
+    "🎮 ゲームソフト",
+
+    "🎧 イヤホン",
+
+    "🕹️ ミニコントローラー"
+
+  ],
+
+
+  SR: [
+
+    "🎮 ゲーム機",
+
+    "🎮✨ スーパーゲーム機",
+
+    "🎧 ゲーム用ヘッドホン",
+
+    "🕹️ プロコントローラー",
+
+    "🍰 豪華おかしセット",
+
+    "🍫🍭 おかし詰め合わせ",
+
+    "🎁 ゲーム＆おかしセット"
+
+  ],
+
+
+  SSR: [
+
+    "🌟🎮 レジェンドゲーム機",
+
+    "💎🎮 究極のゲーム機",
+
+    "👑🎮 プレミアムゲームセット",
+
+    "🎮🏆 ゲームマスターセット",
+
+    "🍫✨ おかしの宝箱",
+
+    "🍭👑 レジェンドおかしセット",
+
+    "🎁✨ ゲーム＆おかし豪華セット"
+
+  ]
+
+};
+
+
+// ======================================
+// ゲーム保存
+// ======================================
+
+function saveGame() {
+
+
+  localStorage.setItem(
+    "gachaMoney",
+    money
+  );
+
+
+  localStorage.setItem(
+    "gachaPlayerName",
+    playerName
+  );
+
+
+  localStorage.setItem(
+    "gachaCollection",
+    JSON.stringify(
+      collection
+    )
+  );
+
+
+  localStorage.setItem(
+    "gachaRanking",
+    JSON.stringify(
+      ranking
+    )
+  );
+
+}
+
+
+// ======================================
+// お金表示
+// ======================================
+
+function updateMoney() {
+
+
+  document.getElementById(
+    "money"
+  ).textContent = money;
+
+
+  document.getElementById(
+    "playerName"
+  ).textContent = playerName;
+
+}
+
+
+// ======================================
+// 名前保存
+// ======================================
+
+function saveName() {
+
+
+  const input =
+    document.getElementById(
+      "nameInput"
+    );
+
+
+  const name =
+    input.value.trim();
+
+
+  if (!name) {
+
+    alert(
+      "名前を入力してください！"
+    );
+
+    return;
+
+  }
+
+
+  playerName = name;
+
+
+  saveGame();
+
+  updateMoney();
+
+  updateRanking();
+
+
+  alert(
+    "名前を保存しました！"
+  );
+
+}
+
+
+// ======================================
+// 仕事開始
+// ======================================
+
+function startWork(
+  jobName,
+  salary,
+  seconds,
+  type
+) {
+
+
+  if (working) {
+
+    alert(
+      "今は別の仕事をしています！"
+    );
+
+    return;
+
+  }
+
+
+  working = true;
+
+
+  const button =
+    document.getElementById(
+      type + "Btn"
+    );
+
+
+  const status =
+    document.getElementById(
+      type + "Status"
+    );
+
+
+  const progressBox =
+    document.getElementById(
+      type + "ProgressBox"
+    );
+
+
+  const progress =
+    document.getElementById(
+      type + "Progress"
+    );
+
+
+  const timeText =
+    document.getElementById(
+      type + "Time"
+    );
+
+
+  button.disabled = true;
+
+
+  progressBox.style.display =
+    "block";
+
+
+  status.textContent =
+    `💼 ${jobName}で働いています...`;
+
+
+  let timeLeft = seconds;
+
+
+  timeText.textContent =
+    timeLeft;
+
+
+  progress.style.width =
+    "0%";
+
+
+  const timer =
+    setInterval(() => {
+
+
+      timeLeft--;
+
+
+      timeText.textContent =
+        timeLeft;
+
+
+      const percent =
+        (
+          (seconds - timeLeft)
+          / seconds
+        ) * 100;
+
+
+      progress.style.width =
+        percent + "%";
+
+
+      if (timeLeft <= 0) {
+
+
+        clearInterval(timer);
+
+
+        money += salary;
+
+
+        saveGame();
+
+        updateMoney();
+
+        updateRanking();
+
+
+        status.textContent =
+          `🎉 ${jobName}終了！ ＋${salary}円！`;
+
+
+        progressBox.style.display =
+          "none";
+
+
+        button.disabled =
+          false;
+
+
+        working =
+          false;
+
+      }
+
+
+    }, 1000);
+
+}
+
+
+// ======================================
+// レア度
+// ======================================
+
+function getRarity() {
+
+
+  const random =
+    Math.random() * 100;
+
+
+  if (random < 5) {
+
+    return "SSR";
+
+  }
+
+
+  if (random < 30) {
+
+    return "SR";
+
+  }
+
+
+  return "R";
+
+}
+
+
+// ======================================
+// ガチャ
+// ======================================
+
+function gacha() {
+
+
+  if (working) {
+
+    alert(
+      "仕事中はガチャを回せません！"
+    );
+
+    return;
+
+  }
+
+
+  if (money < 100) {
+
+
+    document.getElementById(
+      "result"
+    ).innerHTML = `
+
+      <div class="result-card">
+
+        😢 お金が足りません！
+
+        <br><br>
+
+        仕事をして
+        100円ためよう！
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  money -= 100;
+
+
+  saveGame();
+
+  updateMoney();
+
+
+  const capsule =
+    document.getElementById(
+      "capsule"
+    );
+
+
+  capsule.classList.add(
+    "shake"
+  );
+
+
+  document.getElementById(
+    "result"
+  ).innerHTML =
+    "<p>🎰 ガチャガチャ中...</p>";
+
+
+  setTimeout(() => {
+
+
+    capsule.classList.remove(
+      "shake"
+    );
+
+
+    const rarity =
+      getRarity();
+
+
+    const list =
+      items[rarity];
+
+
+    const item =
+      list[
+        Math.floor(
+          Math.random()
+          * list.length
+        )
+      ];
+
+
+    if (!collection[item]) {
+
+
+      collection[item] = {
+
+        rarity: rarity,
+
+        count: 0
+
+      };
+
+    }
+
+
+    collection[item].count++;
+
+
+    saveGame();
+
+
+    document.getElementById(
+      "result"
+    ).innerHTML = `
+
+      <div class="result-card">
+
+        <div
+          class="rarity ${rarity}"
+        >
+          ${rarity}
+        </div>
+
+        <div class="item">
+          ${item}
+        </div>
+
+        <p>
+          🎉 おめでとう！
+        </p>
+
+      </div>
+
+    `;
+
+
+    updateCollection();
+
+    updateRanking();
+
+
+  }, 1000);
+
+}
+
+
+// ======================================
+// コレクション表示
+// ======================================
+
+function updateCollection() {
+
+
+  const element =
+    document.getElementById(
+      "collection"
+    );
+
+
+  element.innerHTML = "";
+
+
+  const keys =
+    Object.keys(
+      collection
+    );
+
+
+  if (keys.length === 0) {
+
+
+    element.innerHTML =
+      "<p>まだ景品がありません。</p>";
+
+
+    return;
+
+  }
+
+
+  keys.forEach(item => {
+
+
+    const data =
+      collection[item];
+
+
+    element.innerHTML += `
+
+      <div class="collection-item">
+
+        <div
+          class="rarity ${data.rarity}"
+        >
+          ${data.rarity}
+        </div>
+
+        <div class="item">
+          ${item}
+        </div>
+
+        <div class="count">
+          ${data.count}個
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+// ======================================
+// 景品の合計数
+// ======================================
+
+function getCollectionCount() {
+
+
+  let total = 0;
+
+
+  Object.values(
+    collection
+  ).forEach(item => {
+
+    total += item.count;
+
+  });
+
+
+  return total;
+
+}
+
+
+// ======================================
+// ランキング更新
+// ======================================
+
+function updateRanking() {
+
+
+  if (
+    playerName === "未設定"
+  ) {
+
+    return;
+
+  }
+
+
+  const count =
+    getCollectionCount();
+
+
+  const existing =
+    ranking.find(
+      player =>
+        player.name === playerName
+    );
+
+
+  if (existing) {
+
+
+    if (
+      count > existing.count
+    ) {
+
+      existing.count =
+        count;
+
+    }
+
+
+  } else {
+
+
+    ranking.push({
+
+      name: playerName,
+
+      count: count
+
+    });
+
+  }
+
+
+  ranking.sort(
+    (a, b) =>
+      b.count - a.count
+  );
+
+
+  ranking =
+    ranking.slice(0, 20);
+
+
+  saveGame();
+
+  displayRanking();
+
+}
+
+
+// ======================================
+// ランキング表示
+// ======================================
+
+function displayRanking() {
+
+
+  const element =
+    document.getElementById(
+      "ranking"
+    );
+
+
+  element.innerHTML = "";
+
+
+  if (
+    ranking.length === 0
+  ) {
+
+
+    element.innerHTML =
+      "<p>まだランキングがありません。</p>";
+
+
+    return;
+
+  }
+
+
+  ranking.forEach(
+    (player, index) => {
+
+
+      let medal;
+
+
+      if (index === 0) {
+
+        medal = "🥇";
+
+      }
+
+      else if (index === 1) {
+
+        medal = "🥈";
+
+      }
+
+      else if (index === 2) {
+
+        medal = "🥉";
+
+      }
+
+      else {
+
+        medal =
+          `${index + 1}位`;
+
+      }
+
+
+      element.innerHTML += `
+
+        <div class="rank">
+
+          <span>
+
+            ${medal}
+
+            <strong>
+              ${escapeHTML(
+                player.name
+              )}
+            </strong>
+
+          </span>
+
+
+          <span>
+            🎁 ${player.count}個
+          </span>
+
+        </div>
+
+      `;
+
+    }
+  );
+
+}
+
+
+// ======================================
+// 安全な文字表示
+// ======================================
+
+function escapeHTML(text) {
+
+
+  return text
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+// ======================================
+// ゲームリセット
+// ======================================
+
+function resetGame() {
+
+
+  if (
+    !confirm(
+      "ゲームデータをリセットしますか？"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  money = 0;
+
+  collection = {};
+
+
+  saveGame();
+
+
+  updateMoney();
+
+  updateCollection();
+
+
+  document.getElementById(
+    "result"
+  ).innerHTML = "";
+
+}
+
+
+// ======================================
+// ランキング削除
+// ======================================
+
+function clearRanking() {
+
+
+  if (
+    !confirm(
+      "ランキングを全部消しますか？"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  ranking = [];
+
+
+  saveGame();
+
+
+  displayRanking();
+
+}
+
+
+// ======================================
+// 最初の表示
+// ======================================
+
+updateMoney();
+
+updateCollection();
+
+displayRanking();
+
+</script>
+
+</body>
+</html>
